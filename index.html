@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>演示商城 - AI客服测试沙箱</title>
+    <!-- 引入 Tailwind CSS 用于快速美化排版 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 简易聊天窗口滚动条样式 */
+        .chat-messages::-webkit-scrollbar {
+            width: 4px;
+        }
+        .chat-messages::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+
+    <!-- 顶部导航栏 -->
+    <header class="bg-white shadow-sm sticky top-0 z-10">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-blue-600">模拟演示商城 (测试专用)</h1>
+            <div class="space-x-4 text-gray-600 text-sm">
+                <a href="#" class="hover:text-blue-500">首页</a>
+                <a href="#" class="hover:text-blue-500">商品分类</a>
+                <a href="#" class="hover:text-blue-500">个人中心</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主体商品展示区域 -->
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        <h2 class="text-lg font-semibold mb-6 text-gray-800">热门推荐商品</h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <!-- 商品卡片 1 -->
+            <div class="bg-white rounded-lg shadow overflow-hidden flex flex-col justify-between">
+                <div class="p-4 bg-gray-200 h-48 flex items-center justify-center text-gray-400">
+                    [商品图片占位符]
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-gray-900 text-base">智能降噪无线耳机 Pro</h3>
+                    <p class="text-gray-500 text-xs mt-1">支持主动降噪，30小时超长续航，原厂正品。</p>
+                    <div class="mt-4 flex items-center justify-between">
+                        <span class="text-red-500 font-bold text-lg">¥599.00</span>
+                        <button onclick="openChatWithProduct('智能降噪无线耳机 Pro')" class="bg-blue-600 text-white text-xs px-3 py-1.5 rounded hover:bg-blue-700 transition">咨询客服</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 商品卡片 2 -->
+            <div class="bg-white rounded-lg shadow overflow-hidden flex flex-col justify-between">
+                <div class="p-4 bg-gray-200 h-48 flex items-center justify-center text-gray-400">
+                    [商品图片占位符]
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-gray-900 text-base">极简风便携保温杯</h3>
+                    <p class="text-gray-500 text-xs mt-1">316不锈钢材质，24小时保温保冷，450ml。</p>
+                    <div class="mt-4 flex items-center justify-between">
+                        <span class="text-red-500 font-bold text-lg">¥99.00</span>
+                        <button onclick="openChatWithProduct('极简风便携保温杯')" class="bg-blue-600 text-white text-xs px-3 py-1.5 rounded hover:bg-blue-700 transition">咨询客服</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 商品卡片 3 -->
+            <div class="bg-white rounded-lg shadow overflow-hidden flex flex-col justify-between">
+                <div class="p-4 bg-gray-200 h-48 flex items-center justify-center text-gray-400">
+                    [商品图片占位符]
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-gray-900 text-base">多功能人体工学办公椅</h3>
+                    <p class="text-gray-500 text-xs mt-1">高弹透气网面，自适应腰托，可调扶手。</p>
+                    <div class="mt-4 flex items-center justify-between">
+                        <span class="text-red-500 font-bold text-lg">¥899.00</span>
+                        <button onclick="openChatWithProduct('多功能人体工学办公椅')" class="bg-blue-600 text-white text-xs px-3 py-1.5 rounded hover:bg-blue-700 transition">咨询客服</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 右下角悬浮客服按钮 -->
+    <div id="chat-bubble" onclick="toggleChatWindow()" class="fixed bottom-6 right-6 bg-blue-600 text-white p-4 rounded-full shadow-lg cursor-pointer hover:bg-blue-700 transition duration-300">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+        </svg>
+    </div>
+
+    <!-- 客服对话窗口 -->
+    <div id="chat-window" class="hidden fixed bottom-6 right-6 w-80 sm:w-96 h-[500px] bg-white rounded-lg shadow-2xl flex flex-col overflow-hidden border border-gray-100 z-50">
+        <!-- 窗口头部 -->
+        <div class="bg-blue-600 text-white p-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-2.5 h-2.5 bg-green-400 rounded-full animate-ping"></div>
+                <span class="font-medium text-sm">在线智能客服 (已连接)</span>
+            </div>
+            <button onclick="toggleChatWindow()" class="text-white hover:text-gray-200">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </
+                </svg>
+            </button>
+        </div>
+
+        <!-- 聊天内容展示区 -->
+        <div id="chat-messages" class="chat-messages flex-1 p-4 overflow-y-auto space-y-4 bg-gray-50 text-sm">
+            <!-- 欢迎语 -->
+            <div class="flex items-start">
+                <div class="bg-gray-200 text-gray-700 px-3 py-2 rounded-lg max-w-[80%] rounded-tl-none">
+                    您好！我是您的智能助手。请问有什么可以帮您的？哈~
+                </div>
+            </div>
+        </div>
+
+        <!-- 输入框区域 -->
+        <div class="p-3 bg-white border-t border-gray-100 flex items-center space-x-2">
+            <input type="text" id="user-input" onkeydown="handleKeyDown(event)" placeholder="输入您的问题..." class="flex-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+            <button onclick="sendMessage()" class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700 transition">发送</button>
+        </div>
+    </div>
+
+    <!-- 简易交互逻辑脚本 -->
+    <script>
+        const chatWindow = document.getElementById('chat-window');
+        const chatBubble = document.getElementById('chat-bubble');
+        const chatMessages = document.getElementById('chat-messages');
+        const userInput = document.getElementById('user-input');
+
+        // 切换窗口显示隐藏
+        function toggleChatWindow() {
+            if (chatWindow.classList.contains('hidden')) {
+                chatWindow.classList.remove('hidden');
+                chatBubble.classList.add('hidden');
+            } else {
+                chatWindow.classList.add('hidden');
+                chatBubble.classList.remove('hidden');
+            }
+        }
+
+        // 点击商品咨询时触发
+        function openChatWithProduct(productName) {
+            if (chatWindow.classList.contains('hidden')) {
+                toggleChatWindow();
+            }
+            appendMessage('user', `我想咨询关于“${productName}”`);
+
+            // 模拟延迟回复
+            setTimeout(() => {
+                appendMessage('ai', `收到您的咨询啦！关于这款“${productName}”，你想了解具体的规格、优惠，还是发货时间呀？亲亲~`);
+            }, 800);
+        }
+
+        // 处理回车发送
+        function handleKeyDown(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        // 发送消息的主逻辑
+        function sendMessage() {
+            const text = userInput.value.trim();
+            if (!text) return;
+
+            // 1. 渲染用户消息
+            appendMessage('user', text);
+            userInput.value = '';
+
+            // 2. 模拟调用后端AI接口 (测试时使用模拟延迟)
+            setTimeout(() => {
+                const aiReply = mockAiResponse(text);
+                appendMessage('ai', aiReply);
+            }, 1000);
+        }
+
+        // 向窗口中添加气泡
+        function appendMessage(sender, text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'flex ' + (sender === 'user' ? 'justify-end' : 'justify-start');
+
+            const bubble = document.createElement('div');
+            if (sender === 'user') {
+                bubble.className = 'bg-blue-600 text-white px-3 py-2 rounded-lg max-w-[80%] rounded-tr-none';
+            } else {
+                bubble.className = 'bg-gray-200 text-gray-700 px-3 py-2 rounded-lg max-w-[80%] rounded-tl-none';
+            }
+            bubble.innerText = text;
+
+            messageDiv.appendChild(bubble);
+            chatMessages.appendChild(messageDiv);
+
+            // 滚动到最底
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        /**
+         * 模拟的AI回复规则（实际开发中，需要在此处发起fetch/ajax请求到您的RAG中间件后端）
+         */
+        function mockAiResponse(inputText) {
+            if (inputText.includes('发货') || inputText.includes('快递')) {
+                return "咱们家默认发圆通和顺丰哈，一般下午4点前的订单当天就能发出呢。";
+            }
+            if (inputText.includes('便宜') || inputText.includes('优惠') || inputText.includes('折扣')) {
+                return "亲亲，现在的价格已经是店铺活动底价了哈！如果您现在下单，我可以帮您备注送个精美小礼品，您看可以不？";
+            }
+            if (inputText.includes('耳机')) {
+                return "这款耳机降噪效果特别棒，平时通勤戴非常安静。现在下单还赠送原装保护套一个呢，哈~";
+            }
+            return "好滴，您说的这个问题我记下了，稍后为您核实。请问还有其他我可以帮您的吗？";
+        }
+
+
+    </script>
+    <script>
+        window.difyChatbotConfig = {
+            token: 'oMkA6WC5ZLReWWXR',
+            baseUrl: 'http://45.77.179.85',
+            inputs: {
+                // You can define the inputs from the Start node here
+                // key is the variable name
+                // e.g.
+                // name: "NAME"
+            },
+            systemVariables: {
+                // user_id: 'YOU CAN DEFINE USER ID HERE',
+                // conversation_id: 'YOU CAN DEFINE CONVERSATION ID HERE, IT MUST BE A VALID UUID',
+            },
+            userVariables: {
+                // avatar_url: 'YOU CAN DEFINE USER AVATAR URL HERE',
+                // name: 'YOU CAN DEFINE USER NAME HERE',
+            },
+        }
+    </script>
+    <script src="http://45.77.179.85/embed.min.js"
+            id="oMkA6WC5ZLReWWXR"
+            defer>
+    </script>
+    <style>
+        #dify-chatbot-bubble-button {
+            background-color: #1C64F2 !important;
+        }
+
+        #dify-chatbot-bubble-window {
+            width: 24rem !important;
+            height: 40rem !important;
+        }
+    </style>
+</body>
+</html>
