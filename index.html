@@ -76,6 +76,39 @@
 
     <!-- 安装 AI 客服组件 (只需引入此脚本，若要卸载，直接删掉该行引用即可) -->
     <script src="ai-chatbot.js"></script>
-
+<script>
+ window.difyChatbotConfig = {
+  token: 'oMkA6WC5ZLReWWXR',
+  baseUrl: 'http://45.77.179.85',
+  inputs: {
+    // You can define the inputs from the Start node here
+    // key is the variable name
+    // e.g.
+    // name: "NAME"
+  },
+  systemVariables: {
+    // user_id: 'YOU CAN DEFINE USER ID HERE',
+    // conversation_id: 'YOU CAN DEFINE CONVERSATION ID HERE, IT MUST BE A VALID UUID',
+  },
+  userVariables: {
+    // avatar_url: 'YOU CAN DEFINE USER AVATAR URL HERE',
+    // name: 'YOU CAN DEFINE USER NAME HERE',
+  },
+ }
+</script>
+<script
+ src="http://45.77.179.85/embed.min.js"
+ id="oMkA6WC5ZLReWWXR"
+ defer>
+</script>
+<style>
+  #dify-chatbot-bubble-button {
+    background-color: #1C64F2 !important;
+  }
+  #dify-chatbot-bubble-window {
+    width: 24rem !important;
+    height: 40rem !important;
+  }
+</style>
 </body>
 </html>
