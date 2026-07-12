@@ -9,8 +9,8 @@
 (function () {
     // --- Dify 接口配置 ---
     const DIFY_CONFIG = {
-        token: 'app-IWD9IuSPWRu7vUNAQhlFJycJ', // 您的 API Key
-        baseUrl: 'http://45.77.179.85/v1',     // 接口 Base URL
+        token: 'app-8yqUe32WANdq6Dl618kKcCoP', // 您的 API Key
+        baseUrl: 'https://api.dify.ai/v1',     // 接口 Base URL
         user: 'user_' + Math.random().toString(36).substring(2, 10), // 生成唯一终端用户标识
         conversationId: ''                    // 保存会话ID，维持上下文连续性
     };
